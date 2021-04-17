@@ -8,6 +8,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from .forms import UserForm
+from django.views.generic import View
 # Create your views here.
 def indexPage(request):
     return render(request,'projectapp/index.html')
@@ -51,4 +53,40 @@ def handleLogout(request):
     logout(request)
     messages.info(request,'Successfully logged out')
     return redirect('handleLogin')
+@login_required(login_url='handleLogin')
+def profilePage(request, id):
+    user = User.objects.get(id=id)
+    return render(request,'projectapp/profile.html',{'user':user})
+@login_required(login_url='handleLogin')
+def allprofiles(request):
+    if request.user.is_superuser:
+        user = User.objects.all()
+        return render(request,'projectapp/allprofiles.html',{'user':user})
+    else:
+        return redirect('index')
+
+@method_decorator(login_required, name='dispatch')
+class EditView(View):
+  def get(self, request,id):
+    user = User.objects.get(id=id)
+    fm = UserForm(instance=user)
+    return render(request,'projectapp/editprofile.html',{'form':fm,'user':user})
+  
+  def post(self, request,id):
+    user = User.objects.get(id=id)
+    form = UserForm(request.POST, request.FILES,instance=user)
+    if form.is_valid():
+      form.save()
+    else:
+      print('Reached here')
+    return redirect("/")
+@method_decorator(login_required, name='dispatch')
+class DeleteView(View):
+  def post(self, request,id):
+    if request.method == 'POST':
+        print("Here hu")
+        User.objects.filter(id=id).delete()
+    else:
+        print("Reached here")
+    return redirect('/')
     
