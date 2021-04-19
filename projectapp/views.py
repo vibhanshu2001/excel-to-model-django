@@ -13,6 +13,8 @@ from django.views.generic import View
 # Create your views here.
 def indexPage(request):
     return render(request,'projectapp/index.html')
+def contactPage(request):
+    return render(request,'projectapp/contact.html')
 
 
 @login_required(login_url='handleLogin')
@@ -90,7 +92,7 @@ def uploadfile(request):
 
             value.save()
             
-        messages.success(request,'Data Inserted to Database on confirmation of Admin')
+        messages.success(request,'Data Inserted to Database')
     
     return render(request,'projectapp/uploadfile.html')
     

@@ -24,9 +24,11 @@
                 </div>
             </div>
         </div>
+        {% if user.is_authenticated %}
         <p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">
             Logged in as <strong class="text-black" style="color: #000 !important">{{user.username}}</strong>
         </p>
+        {% endif %}
         
         <p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">
             MENU
@@ -48,18 +50,19 @@
             </li>
             {% endif %}
             <li class="nav-item">
-                <a href="#" class="nav-link text-dark">
+                <a href="/contact" class="nav-link text-dark">
                     <i class="fa fa-cubes mr-3 text-primary fa-fw"></i>
                     Contact
                 </a>
             </li>
+            {% if user.is_authenticated %}
             <li class="nav-item">
                 <a href="uploadfile" class="nav-link text-dark">
                     <i class="fa fa-upload mr-3 text-primary fa-fw"></i>
                     Upload Data
                 </a>
             </li>
-            {% if user.is_authenticated %}
+            
             <li class="nav-item">
                 <a href="/profile/{{user.id}}" class="nav-link text-dark">
                     <i class="fa fa-user mr-3 text-primary fa-fw"></i>
@@ -72,6 +75,18 @@
                 <a href="/allprofiles" class="nav-link text-dark">
                     <i class="fa fa-users mr-3 text-primary fa-fw"></i>
                     All Profiles
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/alldata" class="nav-link text-dark">
+                    <i class="fa fa-database mr-3 text-primary fa-fw"></i>
+                    All Data
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/reviewfiles" class="nav-link text-dark">
+                    <i class="fa fa-file mr-3 text-primary fa-fw"></i>
+                    Review Files
                 </a>
             </li>
             {% endif %}
