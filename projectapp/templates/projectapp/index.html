@@ -1,61 +1,154 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous" />
-
-    <title>HomePage - Sensor Data</title>
-    <style>
-        .vertical-center {
-            min-height: 100%;
-            /* Fallback for browsers do NOT support vh unit */
-            min-height: 100vh;
-            /* These two lines are counted as one :-)       */
-
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-        }
-
-        .card {
-            box-shadow: 0 0px 21.3px rgba(0, 0, 0, 0.015),
-                0 0px 31px rgba(0, 0, 0, 0.027), 0 0px 44px rgba(0, 0, 0, 0.041),
-                0 0px 80px rgba(0, 0, 0, 0.07);
-
-            border-width: 0 !important;
-        }
-    </style>
+    <title>Index Page - Sensor Data</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}" />
 </head>
 
 <body>
-
-    <div class="vertical-center">
-        <div class="container">
-            <div class="card" style="border-radius: 15px; overflow: hidden">
-                <div class="card-header p-3" style="background-color: #0d6efd !important; overflow: hidden">
-                    <h2 class="text-white">Index Page - Sensor Data</h2>
-                </div>
-                <div class="card-body p-5 text-center">
-                    <!-- <button class="btn btn-primary">Login</button> -->
-                    {% if user.is_authenticated %}
-                    <a href="logout" class="btn btn-primary">Logout</a>
-                    <a href="/profile/{{user.id}}" class="btn btn-primary">Profile</a>
-                    <a href="upload" class="btn btn-primary">Upload Data</a>
-                    {% else %}
-                    <a href="login" class="btn btn-primary">Login</a>
-                    {% endif %}
-                    
+    <!-- Vertical navbar -->
+    <div class="vertical-nav bg-white" id="sidebar">
+        <div class="py-4 px-3 mb-4 bg-light">
+            <div class="media d-flex align-items-center">
+                <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/en/b/b7/Mnit_logo.png" alt="..."
+                    width="80" height="80" class="mr-3 rounded-circle img-thumbnail shadow-sm" />
+                <div class="media-body">
+                    <h4 class="m-0">MNIT Jaipur</h4>
+                    <p class="font-weight-normal text-muted mb-0">Sensor Data</p>
                 </div>
             </div>
         </div>
-    </div>
+        <p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">
+            Logged in as <strong class="text-black" style="color: #000 !important">{{user.username}}</strong>
+        </p>
+        
+        <p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">
+            MENU
+        </p>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+        <ul class="nav flex-column bg-white mb-0">
+            <li class="nav-item">
+                <a href="/" class="nav-link text-dark bg-light">
+                    <i class="fa fa-th-large mr-3 text-primary fa-fw"></i>
+                    Home
+                </a>
+            </li>
+            {% if not user.is_authenticated %}
+            <li class="nav-item">
+                <a href="/login" class="nav-link text-dark">
+                    <i class="fa fa-address-card mr-3 text-primary fa-fw"></i>
+                    Login
+                </a>
+            </li>
+            {% endif %}
+            <li class="nav-item">
+                <a href="#" class="nav-link text-dark">
+                    <i class="fa fa-cubes mr-3 text-primary fa-fw"></i>
+                    Contact
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="uploadfile" class="nav-link text-dark">
+                    <i class="fa fa-upload mr-3 text-primary fa-fw"></i>
+                    Upload Data
+                </a>
+            </li>
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a href="/profile/{{user.id}}" class="nav-link text-dark">
+                    <i class="fa fa-user mr-3 text-primary fa-fw"></i>
+                    My Profile
+                </a>
+            </li>
+            {% endif %}
+            {% if user.is_superuser %}
+            <li class="nav-item">
+                <a href="/allprofiles" class="nav-link text-dark">
+                    <i class="fa fa-users mr-3 text-primary fa-fw"></i>
+                    All Profiles
+                </a>
+            </li>
+            {% endif %}
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a href="logout" class="nav-link text-dark">
+                    <i class="fa fa-times mr-3 text-primary fa-fw" style="color:red !important;"></i>
+                    Logout
+                </a>
+            </li>
+            {% endif %}
+            
+
+        </ul>
+    </div>
+    <!-- End vertical navbar -->
+
+    <!-- Page content holder -->
+    <div class="page-content p-5" id="content">
+        <!-- Toggle button -->
+        <!-- <button id="sidebarCollapse" type="button" class="btn btn-light bg-white rounded-pill shadow-sm px-4 mb-4"><i
+                class="fa fa-bars mr-2"></i><small class="text-uppercase font-weight-bold">Toggle</small></button> -->
+        <button id="sidebarCollapse" type="button" class="btn btn-light bg-white rounded-pill shadow px-4 mb-4">
+            <i class="fa fa-bars"></i>
+        </button>
+        <!-- Demo content -->
+        <h2 class="display-4">Sensor Data</h2>
+        <p class="lead mb-0">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto,
+            exercitationem.
+        </p>
+        <!-- <div class="separator"></div> -->
+        <div class="card shadow my-4" style="border: 0 !important; border-radius: 15px">
+            <div class="card-body text-center">
+                <div class="p-4">
+                    <img src="{% static 'images/login-required.svg' %}" class="img-fluid" alt=""
+                        style="height: 20rem; width: 30rem" />
+                </div>
+                <h3 class="mb-3 display-4" style="color: #212529; font-size: 30px !important">
+                   {% if user.is_authenticated %}<b style="text-transform: uppercase;">{{user.username}},</b>{% endif %} Welcome to Sensor Data Web Application.
+                </h3>
+                {% if user.is_authenticated %}
+                <p class="text-muted">Please click on the upload data to upload your files.</p>
+                {% else %}
+                <p class="text-muted">Please login here so as to explore more.</p>
+                {% endif %}
+
+                {% if user.is_authenticated %}
+                
+                <div class="card" style="border-radius: 15px;">
+                    <div class="card-body">
+                        If you want to upload your data then click below. <br>
+                        <a href="/uploadfile" class="btn btn-primary mt-4">Upload my data</a>
+                    </div>
+                </div>
+                
+                {% else %}
+                <a href="/login" class="btn btn-primary">Login here</a>
+                {% endif %}                
+                
+                
+                
+            </div>
+        </div>
+    </div>
+    <!-- End demo content -->
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+    <script src="{% static 'script.js' %}"></script>
 </body>
 
 </html>

@@ -2,13 +2,15 @@
 <html>
 
 <head>
-    <title>Index Page - Sensor Data</title>
+    <title>Review Files Page - Sensor Data</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
         integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
     {% load static %}
     <link rel="stylesheet" href="{% static 'styles.css' %}" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+
 </head>
 
 <body>
@@ -25,9 +27,9 @@
             </div>
         </div>
         <p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">
-            Logged in as <strong class="text-black" style="color: #000 !important">{{user.username}}</strong>
+            Logged in as <strong class="text-black" style="color: #000 !important">ADMIN</strong>
         </p>
-        
+
         <p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">
             MENU
         </p>
@@ -39,14 +41,9 @@
                     Home
                 </a>
             </li>
-            {% if not user.is_authenticated %}
-            <li class="nav-item">
-                <a href="/login" class="nav-link text-dark">
-                    <i class="fa fa-address-card mr-3 text-primary fa-fw"></i>
-                    Login
-                </a>
-            </li>
-            {% endif %}
+
+
+
             <li class="nav-item">
                 <a href="#" class="nav-link text-dark">
                     <i class="fa fa-cubes mr-3 text-primary fa-fw"></i>
@@ -59,31 +56,31 @@
                     Upload Data
                 </a>
             </li>
-            {% if user.is_authenticated %}
+
             <li class="nav-item">
-                <a href="/profile/{{user.id}}" class="nav-link text-dark">
+                <a href="/profile/1" class="nav-link text-dark">
                     <i class="fa fa-user mr-3 text-primary fa-fw"></i>
                     My Profile
                 </a>
             </li>
-            {% endif %}
-            {% if user.is_superuser %}
+
+
             <li class="nav-item">
                 <a href="/allprofiles" class="nav-link text-dark">
                     <i class="fa fa-users mr-3 text-primary fa-fw"></i>
                     All Profiles
                 </a>
             </li>
-            {% endif %}
-            {% if user.is_authenticated %}
+
+
             <li class="nav-item">
                 <a href="/logout" class="nav-link text-dark">
                     <i class="fa fa-times mr-3 text-primary fa-fw" style="color:red !important;"></i>
                     Logout
                 </a>
             </li>
-            {% endif %}
-            
+
+
 
         </ul>
     </div>
@@ -98,66 +95,66 @@
             <i class="fa fa-bars"></i>
         </button>
         <!-- Demo content -->
-        <h2 class="display-4">Your Profile</h2>
+        <h2 class="display-4">All Profiles</h2>
         <p class="lead mb-0">
-            You may also edit your profile data if you want.
+            Admin has the power to edit any of the profiles of user.
         </p>
         <!-- <div class="separator"></div> -->
         <div class=" shadow my-4" style="border: 0 !important; border-radius: 15px">
             <div class=" text-center">
                 <!--Profile Card 3-->
-    		<div class="row text-center">
-                
-                <div class="col-md-12 text-center">
-                    <div class="card profile-card-3" style="border-radius: 15px !important;overflow: hidden">
-                        <div class="background-block" style="overflow: hidden">
-                            <img src="https://sikable.s3.ap-south-1.amazonaws.com/media/courses_cover_photos/700d6570-49ff-4700-b572-800951b46859.jpeg" alt="profile-sample1" class="background"/>
-                        </div>
-                        <div class="profile-thumb-block">
-                            <img src="https://hacodev.club/images/charu.jpeg" alt="profile-image" class="profile"/>
-                        </div>
-                        <div class="card-content">
-                            <div class="table-responsive">
-                                <table class="table table-bordered">
-                                    <thead>
-                                      <tr>
-                                        <th scope="col">ID</th>
-                                        <th scope="col">Username</th>
-                                        <th scope="col">First Name</th>
-                                        <th scope="col">Last Name</th>
-                                        <th scope="col">Email</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <tr>
-                                        <th scope="row">{{user.id}}</th>
-                                        <td>{{user.username}}</td>
-                                        <td>{{user.first_name}}</td>
-                                        <td>{{user.last_name}}</td>
-                                        <td>{{user.email}}</td>
-                                      </tr>
-                                      
-                                    </tbody>
-                                  </table>
+                <div class="row text-center">
+
+                    <div class="col-md-12 text-center">
+                        <div class="card profile-card-3" style="border-radius: 15px !important;overflow: hidden">
+                            <div class="background-block" style="overflow: hidden; height:200px !important">
+                                <img src="https://sikable.s3.ap-south-1.amazonaws.com/media/courses_cover_photos/700d6570-49ff-4700-b572-800951b46859.jpeg"
+                                    alt="profile-sample1" class="background" />
                             </div>
-                            
-                        <!-- <div class="icon-block"><a href="#"><i class="fa fa-facebook"></i></a><a href="#"> <i class="fa fa-twitter"></i></a><a href="#"> <i class="fa fa-google-plus"></i></a></div> -->
-                        {% if user.is_authenticated %}
-                        <a href="/edit/{{user.id}}" class="btn btn-primary">Edit Profile</a>
-    
-                        {% endif %}
+
+                            <div class="card-content">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="files_table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Sheet Name</th>
+                                                <th scope="col">Username</th>
+                                                <th scope="col">File URL</th>
+                                                <th scope="col">Uploaded On</th>
+                                                <th scope="col">Status</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for i in files %}
+                                            <tr>
+                                                <th scope="row">{{i.sheetname}}</th>
+                                                <td>{{i.username}}</td>
+                                                <td><a href="{{i.fileupload.url}}">Download</a></td>
+                                                <td>{{i.date}}</td>
+                                                <td>
+                                                    {{i.statusfield}}
+                                                </td>
+
+                                            </tr>
+                                            {% endfor %}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
+                            </div>
+                        </div>
                     </div>
-                    </div>
+
                 </div>
-                
-            </div>
 
 
             </div>
         </div>
     </div>
     <!-- End demo content -->
-
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
@@ -168,6 +165,11 @@
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
         crossorigin="anonymous"></script>
     <script src="{% static 'script.js' %}"></script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+    <script>$(document).ready(function () {
+            $('#files_table').DataTable();
+        });</script>
 </body>
 
 </html>
